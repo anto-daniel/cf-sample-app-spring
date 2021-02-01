@@ -5,4 +5,7 @@ applications:
   instances: 1
   random-route: true
   buildpacks:
-  - https://github.com/cloudfoundry/java-buildpack.git
+  - java_buildpack_offline
+  - datadog_application_monitoring
+  env:
+    DD_API_KEY: ((dd_api_key))
