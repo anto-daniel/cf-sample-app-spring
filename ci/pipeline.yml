@@ -17,11 +17,11 @@ resources:
 - name: cf-env
   type: cf-cli-resource
   source:
-    api: https://api.sys.prod.smarsh.cloud
+    api: ((cf-url))
     username: ((cf-username))
     password: ((cf-password))
-    org: smarsh
-    space: alcatraz-dev
+    org: ((cf-org))
+    space: ((cf-space))
     skip_cert_check: true
 
 jobs:
