@@ -9,3 +9,5 @@ applications:
   - java_buildpack_offline
   env:
     DD_API_KEY: ((dd_api_key))
+    DD_SERVICE_NAME: cf-demo-app
+    DD_TRACE_SPAN_TAGS: "env:cf-demo-app"

@@ -25,10 +25,20 @@ resources:
     skip_cert_check: true
 
 jobs:
+- name: set-pipeline
+  serial: true
+  plan:
+  - get: cf-sample-app-repo
+    trigger: true
+  - set_pipeline: ((pipeline-name))
+    file: cf-sample-app-repo/ci/pipeline.yml
+
 - name: deploy-sample-app
   plan:
     - get: cf-sample-app-repo
       trigger: true
+      passed:
+        - set-pipeline
     - put: push-cf-demo
       resource: cf-env
       params:
