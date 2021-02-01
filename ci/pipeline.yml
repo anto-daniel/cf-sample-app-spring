@@ -1,0 +1,41 @@
+---
+resource_types:
+  - name: cf-cli-resource
+    type: registry-image
+    source:
+      repository: nulldriver/cf-cli-resource
+      tag: latest
+
+resources:
+- name: cf-sample-app-repo
+  type: git
+  source:
+    uri: git@github.com:anto-daniel/cf-sample-app-spring.git
+    private_key: ((private_key))
+    branch: master
+
+- name: cf-env
+  type: cf-cli-resource
+  source:
+    api: https://api.sys.prod.smarsh.cloud
+    username: ((cf-username))
+    password: ((cf-password))
+    org: smarsh
+    space: alcatraz-dev
+    skip_cert_check: true
+
+jobs:
+- name: deploy-sample-app
+  plan:
+    - get: cf-sample-app-repo
+      trigger: true
+    - put: push-cf-demo
+      resource: cf-env
+      params:
+        command: push
+        path: cf-sample-app-repo/
+        manifest: cf-sample-app-repo/manifest.yml
+        vars:
+          dd_api_key: ((dd_api_key))
+        environment_variables:
+          DD_API_KEY: ((dd_api_key))
